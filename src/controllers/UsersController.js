@@ -6,9 +6,9 @@ class UsersController {
   async index (req, res) {
     try {
       const users = await User.find()
-      return res.status(200).json(users)
+      return res.status(201).json(users)
     } catch (err) {
-      return res.status(500).json({ error: 'Internal error server' })
+      return res.status(404).json({ error: 'Internal error server' })
     }
   }
 
@@ -18,11 +18,10 @@ class UsersController {
 
       const user = await User.findById(id)
       if (!user) {
-        return res.status(404).json()
+        return res.status(200).json()
       }
       return res.json(user)
     } catch (err) {
-      console.error(err)
       return res.status(500).json({ error: 'Internal error server' })
     }
   }
@@ -34,7 +33,7 @@ class UsersController {
       const user = await User.findOne({ email })
 
       if (user) {
-        return res.status(402).json({ message: 'User already exists' })
+        return res.status(400).json({ message: 'User already exists' })
       }
 
       const newUser = await User.create({
